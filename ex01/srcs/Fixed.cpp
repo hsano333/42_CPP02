@@ -65,15 +65,13 @@ Fixed::~Fixed()
 
 int Fixed::getRawBits(void) const
 {
+    cout << "getRawBits member function called" << endl;
     return fixed_;
 }
 
 void Fixed::setRawBits(int const raw)
 {
-    if (calcOverFlow(raw, bit_))
-    {
-        cout << "warning:" << raw << " is overflow" << endl;
-    }
+    cout << "setRawBits member function called" << endl;
     fixed_ = raw;
 }
 
@@ -103,15 +101,12 @@ int Fixed::isOverFlow(void)
 
 float Fixed::toFloat(void) const
 {
-    float tmp;
-
-    tmp = fixed_ / ldexp(1, bit_);
-    return (tmp);
+    return (fixed_ / ldexp(1, bit_));
 }
 
 int Fixed::toInt(void) const
 {
-    return (fixed_ >> bit_);
+    return (fixed_ / ldexp(1, bit_));
 }
 
 std::ostream& operator<<(std::ostream& os, Fixed& f)

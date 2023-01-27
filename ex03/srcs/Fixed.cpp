@@ -18,7 +18,7 @@ int Fixed::trans(const float value, const int bit)
     return (nearbyint(ldexp(value, bit)));
 }
 
-void Fixed::change_all(int value, int bit, int overflow)
+void Fixed::change_all(int value, int bit, bool overflow)
 {
     fixed_ = value;
     bit_ = bit;
@@ -29,49 +29,49 @@ void Fixed::change_all(int value, int bit, int overflow)
 
 Fixed::Fixed()
 {
-    cout << "Default constructor called" << endl;
+    //cout << "Default constructor called" << endl;
     this->change_all(0, init_bit_, false);
 }
 
 Fixed::Fixed(const float fixed)
 {
-    cout << "Float constructor called" << endl;
+    //cout << "Float constructor called" << endl;
     this->change_all(trans(fixed, init_bit_), init_bit_, calcOverFlow(fixed, init_bit_));
 }
 
 Fixed::Fixed(const int fixed)
 {
-    cout << "Int constructor called" << endl;
+    //cout << "Int constructor called" << endl;
     this->change_all(trans(fixed, init_bit_), init_bit_, calcOverFlow(fixed, init_bit_));
 }
 
 Fixed::Fixed(const Fixed &f)
 {
-    cout << "Copy constructor called" << endl;
+    //cout << "Copy constructor called" << endl;
     this->change_all(f.fixed_, f.bit_, f.overflow_);
 }
 
 void Fixed::operator=(const Fixed &f)
 {
     Fixed tmp;
-    cout << "Copy assignment operator called" << endl;
+    //cout << "Copy assignment operator called" << endl;
     this->change_all(f.fixed_, f.bit_, f.overflow_);
 }
 
 Fixed::~Fixed()
 {
-    cout << "Destructor called" << endl;
+    //cout << "Destructor called" << endl;
 }
 
 int Fixed::getRawBits(void) const
 {
-    cout << "getRawBits member function called" << endl;
+    //cout << "getRawBits member function called" << endl;
     return fixed_;
 }
 
 void Fixed::setRawBits(int const raw)
 {
-    cout << "setRawBits member function called" << endl;
+    //cout << "setRawBits member function called" << endl;
     this->change_all(raw, this->bit_, false);
 }
 
@@ -94,22 +94,19 @@ bool Fixed::calcOverFlow(int value, int bit)
     return (false);
 }
 
-int Fixed::isOverFlow(void)
+bool Fixed::isOverFlow(void) const
 {
     return (overflow_);
 }
 
 float Fixed::toFloat(void) const
 {
-    float tmp;
-
-    tmp = fixed_ / ldexp(1, bit_);
-    return (tmp);
+    return (fixed_ / ldexp(1, bit_));
 }
 
 int Fixed::toInt(void) const
 {
-    return (fixed_ >> bit_);
+    return (fixed_ / ldexp(1, bit_));
 }
 
 std::ostream& operator<<(std::ostream& os, Fixed& f)

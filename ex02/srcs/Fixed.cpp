@@ -18,7 +18,7 @@ int Fixed::trans(const float value, const int bit)
     return (nearbyint(ldexp(value, bit)));
 }
 
-void Fixed::change_all(int value, int bit, int overflow)
+void Fixed::change_all(int value, int bit, bool overflow)
 {
     fixed_ = value;
     bit_ = bit;
@@ -94,22 +94,19 @@ bool Fixed::calcOverFlow(int value, int bit)
     return (false);
 }
 
-int Fixed::isOverFlow(void)
+bool Fixed::isOverFlow(void) const
 {
     return (overflow_);
 }
 
 float Fixed::toFloat(void) const
 {
-    float tmp;
-
-    tmp = fixed_ / ldexp(1, bit_);
-    return (tmp);
+    return (fixed_ / ldexp(1, bit_));
 }
 
 int Fixed::toInt(void) const
 {
-    return (fixed_ >> bit_);
+    return (fixed_ / ldexp(1, bit_));
 }
 
 std::ostream& operator<<(std::ostream& os, Fixed& f)

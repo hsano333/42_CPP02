@@ -36,5 +36,6 @@ int Fixed::getRawBits(void) const
 
 void Fixed::setRawBits(int const raw)
 {
+    cout << "setRawBits member function called" << endl;
     fixed_ = raw;
 }

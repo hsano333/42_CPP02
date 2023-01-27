@@ -1,5 +1,12 @@
 #include "Point.hpp"
+#include <iostream>
+#include <string>
+#include "Fixed.hpp"
 
+
+using std::cout;
+using std::string;
+using std::endl;
 
 Point::Point(void) : x(0), y(0)
 {
@@ -30,4 +37,35 @@ void Point::operator=(const Point &p)
 
 Point::~Point()
 {
+}
+
+Fixed Point::getX() const
+{
+    return (this->x);
+}
+
+Fixed Point::getY() const
+{
+    return (this->y);
+}
+
+bool Point::isOverFlow(void) const
+{
+    if (this->x.isOverFlow() || this->y.isOverFlow())
+        return (true);
+    return (false);
+}
+
+bool bsp( Point const a, Point const b, Point const c, Point const point)
+{
+    bool result = false;
+    if (a.isOverFlow() || b.isOverFlow() || c.isOverFlow() || point.isOverFlow())
+    {
+        cout << "error: overflow" << endl;
+        return (false);
+    }
+    cout << "a:" << a.getX() << ", b:" << b.getX() << ", c:" << c.getX() << "point:" << point.getX() <<  endl;
+
+
+    return (result);
 }

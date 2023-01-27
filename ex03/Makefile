@@ -2,7 +2,7 @@ NAME	:= a.out
 LIB	:= ./lib/
 OBJDIR	:= ./obj
 SRCDIR	:= ./srcs/
-SRC	:= main.cpp Fixed.cpp
+SRC	:= main.cpp Fixed.cpp Point.cpp
 ENTRY	:= 
 
 INCS	:= ./include

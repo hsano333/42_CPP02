@@ -15,19 +15,19 @@ class Fixed
         static const int init_bit_ = 8;
         int fixed_;
         int bit_;
-        int overflow_;
+        bool overflow_;
         bool calcOverFlow(int value, int bit_p);
         bool calcOverFlow(float value, int bit_p);
         int  trans(const int value, const int bit);
         int  trans(const float value, const int bit);
-        void change_all(int value, int bit, int overflow);
+        void change_all(int value, int bit, bool overflow);
     public:
         Fixed();
         Fixed(const int fixed);
         Fixed(const float fixed);
         Fixed(const Fixed &f);
         void operator=(const Fixed &f);
-        bool operator<(const Fixed &f) const;;
+        bool operator<(const Fixed &f) const;
         bool operator<=(const Fixed &f) const;
         bool operator>(const Fixed &f) const;;
         bool operator>=(const Fixed &f) const;
@@ -52,7 +52,7 @@ class Fixed
         void setRawBits(int const raw);
         float toFloat(void) const;
         int toInt(void) const;
-        int isOverFlow(void);
+        bool isOverFlow(void) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Fixed& f);
