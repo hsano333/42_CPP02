@@ -88,7 +88,7 @@ bool Fixed::calcOverFlow(int value, int bit)
     int tmp_bit = max_bit_ - bit - 2;
     int tmp_value;
     
-    tmp_value = (value >> tmp_bit);
+    tmp_value = (value / ldexp(1, tmp_bit));
     if (tmp_value > 0)
         return (true);
     return (false);
@@ -126,8 +126,8 @@ bool Fixed::operator<(const Fixed &f) const
     if (this->bit_ == f.bit_)
         return (this->fixed_ < f.fixed_);
     else if (this->bit_ > f.bit_)
-        return ((this->fixed_ >> (this->bit_ - f.bit_)) < f.fixed_);
-    return (this->fixed_ < (f.fixed_ >> (f.bit_ - this->bit_)));
+        return ((this->fixed_ / ldexp(1, (this->bit_ - f.bit_))) < f.fixed_);
+    return (this->fixed_ < (f.fixed_ / ldexp(1, (f.bit_ - this->bit_))));
 }
 
 bool Fixed::operator<=(const Fixed &f) const
@@ -135,8 +135,8 @@ bool Fixed::operator<=(const Fixed &f) const
     if (this->bit_ == f.bit_)
         return (this->fixed_ <= f.fixed_);
     else if (this->bit_ > f.bit_)
-        return ((this->fixed_ >> (this->bit_ - f.bit_)) <= f.fixed_);
-    return (this->fixed_ <= (f.fixed_ >> (f.bit_ - this->bit_)));
+        return ((this->fixed_ / ldexp(1, (this->bit_ - f.bit_))) <= f.fixed_);
+    return (this->fixed_ <= (f.fixed_ / ldexp(1, (f.bit_ - this->bit_))));
 }
 
 bool Fixed::operator>(const Fixed &f) const
@@ -144,8 +144,8 @@ bool Fixed::operator>(const Fixed &f) const
     if (this->bit_ == f.bit_)
         return (this->fixed_ > f.fixed_);
     else if (this->bit_ > f.bit_)
-        return ((this->fixed_ >> (this->bit_ - f.bit_)) > f.fixed_);
-    return (this->fixed_ > (f.fixed_ >> (f.bit_ - this->bit_)));
+        return ((this->fixed_ / ldexp(1, (this->bit_ - f.bit_))) > f.fixed_);
+    return (this->fixed_ > (f.fixed_ / ldexp(1, (f.bit_ - this->bit_))));
 }
 
 bool Fixed::operator>=(const Fixed &f) const
@@ -153,8 +153,8 @@ bool Fixed::operator>=(const Fixed &f) const
     if (this->bit_ == f.bit_)
         return (this->fixed_ >= f.fixed_);
     else if (this->bit_ > f.bit_)
-        return ((this->fixed_ >> (this->bit_ - f.bit_)) >= f.fixed_);
-    return (this->fixed_ >= (f.fixed_ >> (f.bit_ - this->bit_)));
+        return ((this->fixed_ / ldexp(1, (this->bit_ - f.bit_))) >= f.fixed_);
+    return (this->fixed_ >= (f.fixed_ / ldexp(1, (f.bit_ - this->bit_))));
 }
 
 bool Fixed::operator==(const Fixed &f) const
@@ -162,8 +162,8 @@ bool Fixed::operator==(const Fixed &f) const
     if (this->bit_ == f.bit_)
         return (this->fixed_ == f.fixed_);
     else if (this->bit_ > f.bit_)
-        return ((this->fixed_ >> (this->bit_ - f.bit_)) == f.fixed_);
-    return (this->fixed_ == (f.fixed_ >> (f.bit_ - this->bit_)));
+        return ((this->fixed_ / ldexp(1, (this->bit_ - f.bit_))) == f.fixed_);
+    return (this->fixed_ == (f.fixed_ / ldexp(1, (f.bit_ - this->bit_))));
 }
 
 bool Fixed::operator!=(const Fixed &f) const
@@ -171,8 +171,8 @@ bool Fixed::operator!=(const Fixed &f) const
     if (this->bit_ == f.bit_)
         return (this->fixed_ != f.fixed_);
     else if (this->bit_ > f.bit_)
-        return ((this->fixed_ >> (this->bit_ - f.bit_)) != f.fixed_);
-    return (this->fixed_ != (f.fixed_ >> (f.bit_ - this->bit_)));
+        return ((this->fixed_ / ldexp(1, (this->bit_ - f.bit_))) != f.fixed_);
+    return (this->fixed_ != (f.fixed_ / ldexp(1, (f.bit_ - this->bit_))));
 }
 
 Fixed Fixed::operator+(const Fixed &f) const
@@ -193,14 +193,14 @@ Fixed Fixed::operator+(const Fixed &f) const
     }
     else if (this->bit_ < f.bit_)
     {
-        tmpl = (this->fixed_ >> (f.bit_ - this->bit_)) + f.fixed_; 
+        tmpl = (this->fixed_ / ldexp(1, (f.bit_ - this->bit_))) + f.fixed_; 
         bit = f.bit_;
         if (tmpl > INT_MAX || tmpl < INT_MIN || this->overflow_ || f.overflow_)
             overflow = true;
         tmp.change_all((int)tmpl, bit, overflow);
         return (tmp);
     }
-    tmpl = this->fixed_ + (f.fixed_ >> (f.bit_ - this->bit_)); 
+    tmpl = this->fixed_ + (f.fixed_ / ldexp(1,  (f.bit_ - this->bit_))); 
     bit = this->bit_;
     if (tmpl > INT_MAX || tmpl < INT_MIN || this->overflow_ || f.overflow_)
         overflow = true;
@@ -226,14 +226,14 @@ Fixed Fixed::operator-(const Fixed &f) const
     }
     else if (this->bit_ < f.bit_)
     {
-        tmpl = (this->fixed_ >> (f.bit_ - this->bit_)) - f.fixed_; 
+        tmpl = (this->fixed_ / ldexp(1, (f.bit_ - this->bit_))) - f.fixed_; 
         bit = f.bit_;
         if (tmpl > INT_MAX || tmpl < INT_MIN || this->overflow_ || f.overflow_)
             overflow = true;
         tmp.change_all((int)tmpl, bit, overflow);
         return (tmp);
     }
-    tmpl = this->fixed_ - (f.fixed_ >> (f.bit_ - this->bit_)); 
+    tmpl = this->fixed_ - (f.fixed_ / ldexp(1, (f.bit_ - this->bit_))); 
     bit = this->bit_;
     if (tmpl > INT_MAX || tmpl < INT_MIN || this->overflow_ || f.overflow_)
         overflow = true;
@@ -249,29 +249,33 @@ Fixed Fixed::operator*(const Fixed &f) const
     int bit;
     if (this->bit_ == f.bit_)
     {
-        tmpl = this->fixed_ * f.fixed_; 
         bit = this->bit_;
-        if ((this->fixed_ != 0 && tmpl / this->fixed_ != f.fixed_) || this->overflow_ || f.overflow_)
+        tmpl = ((long long)this->fixed_ * f.fixed_) / ldexp(1, bit);
+        if (tmpl > INT_MAX || tmpl < INT_MIN || this->overflow_ || f.overflow_)
+        {
+            cout << "overflow test:" << endl;
+            cout << "overflow tmpl:" << tmpl << "this=" << this->fixed_ << ", f=" << f.fixed_  << endl;
+            cout << "overflow tmpl/this:" << tmpl / this->fixed_ << endl;
             overflow = true;
-        tmpl = (tmpl >> bit);
+        }
         tmp.change_all((int)tmpl, bit, overflow);
         return (tmp);
     }
     else if (this->bit_ < f.bit_)
     {
-        tmpl = (this->fixed_ >> (f.bit_ - this->bit_)) * f.fixed_ / ldexp(1, f.bit_); 
+        tmpl = (this->fixed_ / ldexp(1, (f.bit_ - this->bit_))) * f.fixed_ / ldexp(1, f.bit_); 
         bit = f.bit_;
         if ((this->fixed_ != 0 && tmpl / this->fixed_ != f.fixed_) || this->overflow_ || f.overflow_)
             overflow = true;
-        tmpl = (tmpl >> bit);
+        tmpl = (tmpl / ldexp(1, bit));
         tmp.change_all((int)tmpl, bit, overflow);
         return (tmp);
     }
-    tmpl = this->fixed_ * (f.fixed_ >> (f.bit_ - this->bit_)) / ldexp(1, this->bit_); 
+    tmpl = this->fixed_ * (f.fixed_ / ldexp(1, (f.bit_ - this->bit_))) / ldexp(1, this->bit_); 
     bit = this->bit_;
     if ((this->fixed_ != 0 && tmpl / this->fixed_ != f.fixed_) || this->overflow_ || f.overflow_)
         overflow = true;
-    tmpl = (tmpl >> bit);
+    tmpl = (tmpl / ldexp(1, bit));
     tmp.change_all((int)tmpl, bit, overflow);
     return (tmp);
 }
@@ -301,14 +305,14 @@ Fixed Fixed::operator/(const Fixed &f) const
     }
     else if (this->bit_ < f.bit_)
     {
-        tmpl = (this->fixed_ >> (f.bit_ - this->bit_ + this->bit_)) / f.fixed_ * ldexp(1, f.bit_); 
+        tmpl = (this->fixed_ / ldexp(1, (f.bit_ - this->bit_ + this->bit_))) / f.fixed_ * ldexp(1, f.bit_); 
         bit = f.bit_;
         if (tmpl > INT_MAX || this->overflow_ || f.overflow_)
             overflow = true;
         tmp.change_all((int)tmpl, bit, overflow);
         return (tmp);
     }
-    tmpl = (this->fixed_ >> this->bit_) / (f.fixed_ >> (f.bit_ - this->bit_)) * ldexp(1, this->bit_); 
+    tmpl = (this->fixed_ / ldexp(1, this->bit_)) / (f.fixed_ / ldexp(1, (f.bit_ - this->bit_))) * ldexp(1, this->bit_); 
     bit = this->bit_;
     if (tmpl > INT_MAX || this->overflow_ || f.overflow_)
         overflow = true;
@@ -382,7 +386,6 @@ Fixed& Fixed::max(Fixed& f1, Fixed& f2)
 
 const Fixed& Fixed::min(const Fixed& f1, const Fixed& f2)
 {
-    //Fixed *cp_f1 = const_cast <Fixed >(f1);
     if (f1 >= f2)
         return (f2);
     return (f1);
