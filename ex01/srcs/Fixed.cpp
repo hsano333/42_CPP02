@@ -106,7 +106,7 @@ float Fixed::toFloat(void) const
 
 int Fixed::toInt(void) const
 {
-    return (fixed_ / ldexp(1, bit_));
+    return ((int)(fixed_ / ldexp(1, bit_)));
 }
 
 std::ostream& operator<<(std::ostream& os, Fixed& f)
