@@ -7,10 +7,9 @@ class Point
     private:
         const Fixed x;
         const Fixed y;
-        //bool  (Point& v1, Point& v2, Point& v3, Point& pt) const;
     public:
         Point ();
-        Point (const Fixed& x, const Fixed& y);
+        Point (const float& x, const float& y);
         Point (const  Point &p);
         void operator=(const Point &p);
         ~Point();

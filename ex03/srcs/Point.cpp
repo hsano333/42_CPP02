@@ -12,7 +12,7 @@ Point::Point(void) : x(0), y(0)
 {
 }
 
-Point::Point(const Fixed& rx, const Fixed& ry) : x(rx), y(ry)
+Point::Point(const float& rx, const float& ry) : x(rx), y(ry)
 {
 }
 
@@ -55,7 +55,7 @@ bool Point::isOverFlow(void) const
 float sign (Point& p1, Point& p2, Point& p3)
 {
     return ((p1.getX() - p3.getX()) * (p2.getY() - p3.getY()) \
-            - (p2.getX() - p3.getX()) * (p1.getY() - p3.getY())).toInt();
+            - (p2.getX() - p3.getX()) * (p1.getY() - p3.getY())).toFloat();
 }
 
 bool PointInTriangle (Point v1, Point v2, Point v3, Point pt)
@@ -82,8 +82,10 @@ bool bsp( Point const a, Point const b, Point const c, Point const point)
         cout << "error: overflow" << endl;
         return (false);
     }
-    cout << "a:" << a.getX() << ", b:" << b.getX() << ", c:" << c.getX() << "point:" << point.getX() <<  endl;
+    cout << "a:(" << a.getX() << "," <<  a.getY() << ") " <<
+            "b:(" << b.getX() << "," <<  b.getY() << ") " <<
+            "c:(" << c.getX() << "," <<  c.getY() << ") " <<
+            "point:(" << point.getX() << "," <<  point.getY() << ")" << endl;
     result = PointInTriangle(a, b, c, point);
-
     return (result);
 }
