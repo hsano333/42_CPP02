@@ -20,10 +20,11 @@ Point::Point(const Point& p) : x(p.x), y(p.y)
 {
 }
 
-void Point::operator=(const Point &p)
+Point& Point::operator=(const Point &p)
 {
     const_cast<Fixed&> (this->x) = p.x;
     const_cast<Fixed&> (this->y) = p.y;
+    return (*this);
 }
 
 Point::~Point()

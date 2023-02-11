@@ -50,12 +50,13 @@ Fixed::Fixed(const Fixed &f)
     overflow_ = f.overflow_;
 }
 
-void Fixed::operator=(const Fixed &f)
+Fixed& Fixed::operator=(const Fixed &f)
 {
     cout << "Copy assignment operator called" << endl;
     bit_ = f.bit_;
     fixed_ = f.fixed_;
     overflow_ = f.overflow_;
+    return (*this);
 }
 
 Fixed::~Fixed()

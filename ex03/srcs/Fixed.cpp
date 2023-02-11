@@ -29,33 +29,29 @@ void Fixed::change_all(int value, int bit, bool overflow)
 
 Fixed::Fixed()
 {
-    //cout << "Default constructor called" << endl;
     this->change_all(0, init_bit_, false);
 }
 
 Fixed::Fixed(const float fixed)
 {
-    //cout << "Float constructor called" << endl;
     this->change_all(trans(fixed, init_bit_), init_bit_, calcOverFlow(fixed, init_bit_));
 }
 
 Fixed::Fixed(const int fixed)
 {
-    //cout << "Int constructor called" << endl;
     this->change_all(trans(fixed, init_bit_), init_bit_, calcOverFlow(fixed, init_bit_));
 }
 
 Fixed::Fixed(const Fixed &f)
 {
-    //cout << "Copy constructor called" << endl;
     this->change_all(f.fixed_, f.bit_, f.overflow_);
 }
 
-void Fixed::operator=(const Fixed &f)
+Fixed& Fixed::operator=(const Fixed &f)
 {
     Fixed tmp;
-    //cout << "Copy assignment operator called" << endl;
     this->change_all(f.fixed_, f.bit_, f.overflow_);
+    return (*this);
 }
 
 Fixed::~Fixed()

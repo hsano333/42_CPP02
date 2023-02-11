@@ -51,11 +51,12 @@ Fixed::Fixed(const Fixed &f)
     this->change_all(f.fixed_, f.bit_, f.overflow_);
 }
 
-void Fixed::operator=(const Fixed &f)
+Fixed& Fixed::operator=(const Fixed &f)
 {
     Fixed tmp;
     //cout << "Copy assignment operator called" << endl;
     this->change_all(f.fixed_, f.bit_, f.overflow_);
+    return (*this);
 }
 
 Fixed::~Fixed()

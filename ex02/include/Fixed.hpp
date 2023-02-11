@@ -26,7 +26,7 @@ class Fixed
         Fixed(const int fixed);
         Fixed(const float fixed);
         Fixed(const Fixed &f);
-        void operator=(const Fixed &f);
+        Fixed& operator=(const Fixed &f);
         bool operator<(const Fixed &f) const;
         bool operator<=(const Fixed &f) const;
         bool operator>(const Fixed &f) const;;
