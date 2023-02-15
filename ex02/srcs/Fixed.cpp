@@ -1,7 +1,7 @@
 #include "Fixed.hpp"
 #include <string>
 #include <iostream>
-#include <cmath>
+//#include <cmath>
 
 using std::cout;
 using std::endl;
@@ -86,6 +86,7 @@ bool Fixed::calcOverFlow(float value, int bit)
 }
 bool Fixed::calcOverFlow(int value, int bit)
 {
+
     int tmp_bit = max_bit_ - bit - 2;
     int tmp_value;
     

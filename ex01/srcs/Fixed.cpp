@@ -8,6 +8,14 @@ using std::endl;
 using std::ostream;
 using std::istream;
 
+double ldexp(int value, int bit)
+{
+    double tmp;
+    tmp = value * (1 << bit);
+    //cout << "my ldexp test:" << tmp << endl;
+    return (double)(value * (1 << bit));
+}
+
 int Fixed::trans(const int value, const int bit)
 {
     return (value << (bit));
@@ -15,7 +23,7 @@ int Fixed::trans(const int value, const int bit)
 
 int Fixed::trans(const float value, const int bit)
 {
-    return (nearbyint(ldexp(value, bit)));
+    return (roundf(ldexp(value, bit)));
 }
 
 Fixed::Fixed()

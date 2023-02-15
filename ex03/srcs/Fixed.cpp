@@ -1,7 +1,7 @@
 #include "Fixed.hpp"
 #include <string>
 #include <iostream>
-#include <cmath>
+//#include <cmath>
 
 using std::cout;
 using std::endl;
