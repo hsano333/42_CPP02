@@ -16,8 +16,8 @@ int main(void)
     Point c = Point(0, 0.09f);
     Point point = Point(0, 0.01f);
     if (bsp(a, b, c, point))
-        cout << "point is in circle" << endl;
+        cout << "point is in triangle" << endl;
     else
-        cout << "point is not in circle" << endl;
+        cout << "point is not in triangle" << endl;
     return 0;
 }

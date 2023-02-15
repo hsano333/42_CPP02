@@ -23,7 +23,7 @@ int Fixed::trans(const int value, const int bit)
 
 int Fixed::trans(const float value, const int bit)
 {
-    return (roundf(ldexp(value, bit)));
+    return (ldexp(value, bit));
 }
 
 Fixed::Fixed()
@@ -115,7 +115,7 @@ float Fixed::toFloat(void) const
 
 int Fixed::toInt(void) const
 {
-    return ((int)(fixed_ / ldexp(1, bit_)));
+    return roundf(fixed_ / ldexp(1, bit_));
 }
 
 std::ostream& operator<<(std::ostream& os, Fixed& f)

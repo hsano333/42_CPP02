@@ -57,4 +57,5 @@ class Fixed
 
 std::ostream& operator<<(std::ostream& os, const Fixed& f);
 std::ostream& operator<<(std::ostream& os, Fixed& f);
+double ldexp(int value, int bit);
 #endif

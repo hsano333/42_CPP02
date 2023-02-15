@@ -1,12 +1,20 @@
 #include "Fixed.hpp"
 #include <string>
 #include <iostream>
-//#include <cmath>
+#include <cmath>
 
 using std::cout;
 using std::endl;
 using std::ostream;
 using std::istream;
+
+double ldexp(int value, int bit)
+{
+    double tmp;
+    tmp = value * (1 << bit);
+    //cout << "my ldexp test:" << tmp << endl;
+    return (double)(value * (1 << bit));
+}
 
 int Fixed::trans(const int value, const int bit)
 {
@@ -15,7 +23,7 @@ int Fixed::trans(const int value, const int bit)
 
 int Fixed::trans(const float value, const int bit)
 {
-    return (nearbyint(ldexp(value, bit)));
+    return ldexp(value, bit);
 }
 
 void Fixed::change_all(int value, int bit, bool overflow)
@@ -102,7 +110,7 @@ float Fixed::toFloat(void) const
 
 int Fixed::toInt(void) const
 {
-    return (fixed_ / ldexp(1, bit_));
+    return roundf((fixed_ / ldexp(1, bit_)));
 }
 
 std::ostream& operator<<(std::ostream& os, Fixed& f)
