@@ -11,12 +11,14 @@ int main(void)
     std::cout << "d:" << d << std::endl;
 
 
-    std::cout << a << std::endl;
-    std::cout << ++a << std::endl;
-    std::cout << a << std::endl;
-    std::cout << a++ << std::endl;
-    std::cout << a << std::endl;
-    std::cout << b << std::endl;
+    std::cout << std::endl;
+    std::cout << "a:" << a << std::endl;
+    std::cout << "++a:" << ++a << std::endl;
+    std::cout << "a:" << a << std::endl;
+    std::cout << std::endl;
+    std::cout << "a++:" << a++ << std::endl;
+    std::cout << "a:" << a << std::endl;
+    std::cout << std::endl;
     std::cout << "a=" << a << ", b=" << b << " big is " << Fixed::max( a, b ) << std::endl;
     std::cout << "a=" << a << ", b=" << b << " small is " << Fixed::min( a, b ) << std::endl;
     std::cout << "a=" << a << ", b=" << b << " a+b= " << a+b << std::endl;
@@ -31,6 +33,7 @@ int main(void)
     std::cout << "a=" << a << ", b=" << b << " a != b " << ((a != b) ? "true" : "false") << std::endl;
 
 
+    std::cout << std::endl;
     int a1, a2, a3;
     a1 = -10 >> 1;
     a2 = -250 >> 1;
